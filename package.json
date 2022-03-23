@@ -1,0 +1,23 @@
+{
+  "name": "dockerized-temper1-webthing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dschuuls/dockerized-temper1-webthing.git"
+  },
+  "author": "dschuuls",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dschuuls/dockerized-temper1-webthing/issues"
+  },
+  "homepage": "https://github.com/dschuuls/dockerized-temper1-webthing#readme",
+  "dependencies": {
+    "node-hid": "^2.1.1",
+    "webthing": "^0.15.0"
+  }
+}
