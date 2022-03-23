@@ -1,5 +1,5 @@
 const temper1 = require('./temper1');
 
-const deviceList = temper1.getDevices();
+const temperature = temper1.readTemperature('/dev/hidraw1');
 
-console.log('deviceList:', deviceList);
+console.log('temperature:', temperature);

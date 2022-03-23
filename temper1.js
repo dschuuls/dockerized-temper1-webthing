@@ -20,7 +20,7 @@ exports.getDevices = () => {
 }
 
 exports.readTemperature = (path, callback, converter) => {
-    if (!converter) converter=exports.toDegreeCelsius;
+    if (!converter) converter = exports.toDegreeCelsius;
     let device = new HID.HID(path);
     device.write(readCommand);
     device.read((err, response) => {
