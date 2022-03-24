@@ -10,16 +10,16 @@ const sensor = new Thing('urn:dev:ops:temper1',
     ['MultiLevelSensor'],
     'A web connected temperature sensor');
 
-readTemperature = (callback) => {
+readTemperature = () => {
 
     let device = new HID.HID(devicePath);
     device.write(readCommand);
     device.read((err, res) => {
         device.close();
         if (err) {
-            callback.call(NaN, NaN);
+            console.log('NaN');
         } else {
-            callback.call(toDegreeCelsius(res[2], res[3]));
+            console.log(toDegreeCelsius(res[2], res[3]));
         }
     });
 }
@@ -31,11 +31,7 @@ toDegreeCelsius = (hiByte, loByte) => {
 
     if (sign) temp = -temp;
 
-    // Calculate it
     return temp * 125.0 / 32000.0;
 }
 
-readTemperature((temp) => {
-
-    console.log('temperature:', temp);
-});
+readTemperature();
