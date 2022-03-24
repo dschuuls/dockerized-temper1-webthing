@@ -61,10 +61,10 @@ class TemperatureSensor extends Thing {
 
         this.toDegreeCelsius = (hiByte, loByte) => {
 
-            let sign = hiByte & (1 << 7);
+            const sign = hiByte & (1 << 7);
             let temp = ((hiByte & 0x7F) << 8) | loByte;
             if (sign) temp = -temp;
-            return (temp * 125.0 / 32000.0).toFixed(1);
+            return temp * 125.0 / 32000.0;
         }
     }
 }
