@@ -12,7 +12,7 @@ exports.readTemperature = (callback) => {
         if (err) {
             callback.call(NaN, NaN);
         } else {
-            callback.call(converter(response[2], response[3]), converter(response[4], response[5]));
+            callback.call(toDegreeCelsius(response[2], response[3]), toDegreeCelsius(response[4], response[5]));
         }
     });
 }
