@@ -1,8 +1,8 @@
 const HID = require('node-hid');
 
 const {
-    SingleThing,
     Property,
+    SingleThing,
     Thing,
     Value,
     WebThingServer,
@@ -51,8 +51,13 @@ class TemperatureSensor extends Thing {
             device.write(readCommand);
             device.read((err, res) => {
                 device.close();
-                if (!err) cb.call(this.toDegreeCelsius(res[2], res[3]));
-                else cb.call(NaN);
+                if (!err) {
+                    console.log('no err', res[2], res[3]);
+                    cb.call(this.toDegreeCelsius(res[2], res[3]));
+                } else {
+                    console.log('err');
+                    cb.call(NaN);
+                }
             });
         }
 
@@ -61,7 +66,9 @@ class TemperatureSensor extends Thing {
             let sign = hiByte & (1 << 7);
             let temp = ((hiByte & 0x7F) << 8) | loByte;
             if (sign) temp = -temp;
-            return temp * 125.0 / 32000.0;
+            let retVal = temp * 125.0 / 32000.0;
+            console.log(retVal);
+            return retVal;
         }
     }
 }
