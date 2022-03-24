@@ -12,11 +12,13 @@ const devicePath = '/dev/hidraw1';
 const readCommand = [0x01, 0x80, 0x33, 0x01, 0x00, 0x00, 0x00, 0x00];
 
 class TemperatureSensor extends Thing {
+
     constructor() {
+
         super(
-            'urn:dev:ops:temper1',
+            'dschuuls:temper1',
             'Temperature Sensor',
-            ['MultiLevelSensor'],
+            'TemperatureSensor',
             'A web connected temperature sensor'
         );
 
@@ -24,12 +26,12 @@ class TemperatureSensor extends Thing {
 
         this.addProperty(
             new Property(this, 'level', this.level, {
-                '@type': 'LevelProperty',
+                '@type': 'TemperatureProperty',
                 title: 'Temperature',
                 type: 'number',
                 description: 'The current temperature in °C',
-                minimum: 273.15 * -1,
-                maximum: 273.15,
+                minimum: -40,
+                maximum: 120,
                 unit: 'degrees',
                 readOnly: true,
             })
@@ -39,7 +41,6 @@ class TemperatureSensor extends Thing {
         setInterval(() => {
             // Update the underlying value, which in turn notifies all listeners
             this.readTemperature();
-
         }, 30 * 1000);
 
         this.readTemperature = () => {
@@ -53,7 +54,7 @@ class TemperatureSensor extends Thing {
                     console.log('setting new temperature:', temp);
                     this.level.notifyOfExternalUpdate(temp);
                 } else {
-                    console.log('err');
+                    console.error(err);
                 }
             });
         }
