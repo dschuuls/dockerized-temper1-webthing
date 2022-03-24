@@ -1,8 +1,14 @@
 const HID = require('node-hid');
+const {Thing} = require("webthing");
 
 const devicePath = '/dev/hidraw1';
 const readCommand = [0x01, 0x80, 0x33, 0x01, 0x00, 0x00, 0x00, 0x00];
 // [1, 128, 51, 1, 0, 0, 0, 0]
+
+const sensor = new Thing('urn:dev:ops:temper1',
+    'Temperature Sensor',
+    ['MultiLevelSensor'],
+    'A web connected temperature sensor');
 
 readTemperature = (callback) => {
 
@@ -29,7 +35,7 @@ toDegreeCelsius = (hiByte, loByte) => {
     return temp * 125.0 / 32000.0;
 }
 
-readTemperature((int, ext) => {
-  console.log('temperature int:', int);
-  console.log('temperature ext:', ext);
+readTemperature((temp) => {
+
+    console.log('temperature:', temp);
 });
