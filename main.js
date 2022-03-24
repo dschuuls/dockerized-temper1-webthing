@@ -32,7 +32,7 @@ class TemperatureSensor extends Thing {
                 description: 'The current temperature in °C',
                 minimum: -40,
                 maximum: 120,
-                unit: 'degrees',
+                unit: 'degree celsius',
                 readOnly: true,
             })
         );
@@ -64,9 +64,7 @@ class TemperatureSensor extends Thing {
             let sign = hiByte & (1 << 7);
             let temp = ((hiByte & 0x7F) << 8) | loByte;
             if (sign) temp = -temp;
-            let retVal = temp * 125.0 / 32000.0;
-            console.log(retVal);
-            return retVal;
+            return temp * 125.0 / 32000.0;
         }
     }
 }
