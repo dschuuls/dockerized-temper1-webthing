@@ -25,38 +25,35 @@ class TemperatureSensor extends Thing {
         this.addProperty(
             new Property(this, 'level', this.level, {
                 '@type': 'LevelProperty',
-                title: 'Humidity',
+                title: 'Temperature',
                 type: 'number',
-                description: 'The current humidity in %',
-                minimum: 0,
-                maximum: 100,
-                unit: 'percent',
+                description: 'The current temperature in °C',
+                minimum: 273.15 * -1,
+                maximum: 273.15,
+                unit: 'degrees',
                 readOnly: true,
             })
         );
 
-        // Poll the sensor reading every 3 seconds
+        // Poll the sensor reading every 30 seconds
         setInterval(() => {
             // Update the underlying value, which in turn notifies all listeners
-            this.readTemperature((temp) => {
-                console.log('setting new temperature:', temp);
-                this.level.notifyOfExternalUpdate(temp);
-            });
+            this.readTemperature();
 
-        }, 3000);
+        }, 30 * 1000);
 
-        this.readTemperature = (cb) => {
+        this.readTemperature = () => {
 
             let device = new HID.HID(devicePath);
             device.write(readCommand);
             device.read((err, res) => {
                 device.close();
                 if (!err) {
-                    console.log('no err', res[2], res[3]);
-                    cb.call(this.toDegreeCelsius(res[2], res[3]));
+                    const temp = this.toDegreeCelsius(res[2], res[3]);
+                    console.log('setting new temperature:', temp);
+                    this.level.notifyOfExternalUpdate(temp);
                 } else {
                     console.log('err');
-                    cb.call(NaN);
                 }
             });
         }
