@@ -38,20 +38,22 @@ class TemperatureSensor extends Thing {
         // Poll the sensor reading every 3 seconds
         setInterval(() => {
             // Update the underlying value, which in turn notifies all listeners
-            const newLevel = this.readTemperature();
-            console.log('setting new temperature:', newLevel);
-            this.level.notifyOfExternalUpdate(newLevel);
+            this.readTemperature((temp) => {
+                console.log('setting new temperature:', temp);
+                this.level.notifyOfExternalUpdate(temp);
+            });
+
         }, 3000);
 
-        this.readTemperature = () => {
+        this.readTemperature = (cb) => {
 
             let device = new HID.HID(devicePath);
             device.write(readCommand);
             device.read((err, res) => {
                 device.close();
-                if (!err) return this.toDegreeCelsius(res[2], res[3]);
+                if (!err) cb.call(this.toDegreeCelsius(res[2], res[3]));
+                else cb.call(NaN);
             });
-            return NaN;
         }
 
         this.toDegreeCelsius = (hiByte, loByte) => {
